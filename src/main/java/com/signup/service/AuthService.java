@@ -95,7 +95,8 @@ public class AuthService {
         if (email != null) {
             userTokenStore.remove(email); // Invalidate token
         }
-        return new AuthResponse(null, "Logout successful", true, null, null);
+        // Use the valid constructor: (boolean success, String message, String token, UserInfo user)
+        return new AuthResponse(true, "Logout successful", null, null);
     }
 
     /**
