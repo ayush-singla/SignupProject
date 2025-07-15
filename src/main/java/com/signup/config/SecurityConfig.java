@@ -22,12 +22,15 @@ public class SecurityConfig {
             .csrf(csrf -> csrf.disable()) // Disable CSRF for API endpoints
             .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
             .authorizeHttpRequests(authz -> authz
+                // Allow access to H2 console FIRST
+                .requestMatchers("/h2-console/**").permitAll()
                 // Allow access to Swagger UI and related endpoints
                 .requestMatchers("/swagger-ui/**", "/swagger-ui.html", "/v3/api-docs/**", "/api-docs/**").permitAll()
-                // Allow access to H2 console
-                .requestMatchers("/h2-console/**").permitAll()
                 // Allow access to public auth endpoints
-                .requestMatchers("/api/auth/signup", "/api/auth/login", "/api/auth/test-public", "/api/auth/users").permitAll()
+//                .requestMatchers("/api/auth/signup", "/api/auth/login", "/api/auth/refresh", "/api/auth/forgot-password", "/api/auth/reset-password", "/api/auth/test-public", "/api/auth/users").permitAll()
+                // Allow favicon and error endpoints
+                            .requestMatchers("/api/auth/signup", "/api/auth/login", "/api/auth/users").permitAll()
+                .requestMatchers("/favicon.ico", "/error").permitAll()
                 // Require authentication for all other endpoints
                 .anyRequest().authenticated()
             )
@@ -41,5 +44,19 @@ public class SecurityConfig {
             );
 
         return http.build();
+    }
+
+    // Add CORS configuration to allow all origins and methods
+    @Bean
+    public org.springframework.web.servlet.config.annotation.WebMvcConfigurer corsConfigurer() {
+        return new org.springframework.web.servlet.config.annotation.WebMvcConfigurer() {
+            @Override
+            public void addCorsMappings(org.springframework.web.servlet.config.annotation.CorsRegistry registry) {
+                registry.addMapping("/**")
+                        .allowedOrigins("*")
+                        .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
+                        .allowedHeaders("*");
+            }
+        };
     }
 } 
