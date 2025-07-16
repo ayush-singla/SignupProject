@@ -7,6 +7,7 @@ import io.swagger.v3.oas.models.info.Info;
 import io.swagger.v3.oas.models.info.License;
 import io.swagger.v3.oas.models.security.SecurityRequirement;
 import io.swagger.v3.oas.models.security.SecurityScheme;
+import io.swagger.v3.oas.models.servers.Server;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -18,6 +19,7 @@ public class SwaggerConfig {
         final String securitySchemeName = "Bearer Authentication";
         
         return new OpenAPI()
+                .addServersItem(new Server().url("https://signupproject-production.up.railway.app").description("Production server"))
                 .info(new Info()
                         .title("Signup Project API")
                         .description("A Spring Boot REST API for user authentication and registration")
