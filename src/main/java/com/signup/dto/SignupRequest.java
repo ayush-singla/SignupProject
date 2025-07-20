@@ -15,9 +15,14 @@ public class SignupRequest {
     @Pattern(regexp = "^[0-9]{10}$", message = "Contact number must be exactly 10 digits")
     private String contactNumber;
 
-    @NotBlank(message = "Email is required")
     @Email(message = "Please provide a valid email address")
+    @Pattern(
+            regexp = "^[a-z0-9._%+-]+@[a-z0-9]+(?:\\.[a-z0-9]+)+$",
+            message = "Email must be lowercase and valid"
+    )
+    @NotBlank(message = "Email is required")
     private String email;
+
 
     @NotBlank(message = "Password is required")
     @Size(min = 8, message = "Password must be at least 8 characters long")
