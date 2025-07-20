@@ -2,10 +2,7 @@ package com.signup.service;
 
 import com.signup.database.DatabaseService;
 import com.signup.dto.AuthResponse;
-import com.signup.dto.ForgotPasswordRequest;
 import com.signup.dto.LoginRequest;
-import com.signup.dto.PasswordResetResponse;
-import com.signup.dto.ResetPasswordRequest;
 import com.signup.dto.SignupRequest;
 import com.signup.model.User;
 import com.signup.util.JwtUtil;
@@ -13,8 +10,6 @@ import com.signup.util.PasswordUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
-import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.Map;
 import com.signup.dto.AuthResponse.UserInfo;
