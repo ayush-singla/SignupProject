@@ -148,81 +148,81 @@ public class AuthService {
      * @param forgotPasswordRequest forgot password request
      * @return password reset response
      */
-    public PasswordResetResponse forgotPassword(ForgotPasswordRequest forgotPasswordRequest) {
-        String email = forgotPasswordRequest.getEmail();
-        
-        // Check if user exists
-        var userOptional = databaseService.findUserByEmail(email);
-        if (userOptional.isEmpty()) {
-            // Don't reveal if email exists or not for security
-            return new PasswordResetResponse(true, "If the email exists, a reset link has been sent");
-        }
-
-        User user = userOptional.get();
-        
-        // Generate reset token
-        String resetToken = UUID.randomUUID().toString();
-        LocalDateTime tokenExpiry = LocalDateTime.now().plusHours(1); // Token expires in 1 hour
-        
-        // Update user with reset token
-        user.setResetToken(resetToken);
-        user.setResetTokenExpiry(tokenExpiry);
-        
-        if (databaseService.updateUser(user)) {
-            // In a real application, send email here
-            // For now, we'll log the reset link
-            String resetLink = "http://localhost:8080/api/auth/reset-password?token=" + resetToken;
-            System.out.println("Password reset link for " + email + ": " + resetLink);
-            
-            return new PasswordResetResponse(true, "If the email exists, a reset link has been sent");
-        } else {
-            return new PasswordResetResponse(false, "Failed to process password reset request");
-        }
-    }
+//    public PasswordResetResponse forgotPassword(ForgotPasswordRequest forgotPasswordRequest) {
+//        String email = forgotPasswordRequest.getEmail();
+//
+//        // Check if user exists
+//        var userOptional = databaseService.findUserByEmail(email);
+//        if (userOptional.isEmpty()) {
+//            // Don't reveal if email exists or not for security
+//            return new PasswordResetResponse(true, "If the email exists, a reset link has been sent");
+//        }
+//
+//        User user = userOptional.get();
+//
+//        // Generate reset token
+//        String resetToken = UUID.randomUUID().toString();
+//        LocalDateTime tokenExpiry = LocalDateTime.now().plusHours(1); // Token expires in 1 hour
+//
+//        // Update user with reset token
+//        user.setResetToken(resetToken);
+//        user.setResetTokenExpiry(tokenExpiry);
+//
+//        if (databaseService.updateUser(user)) {
+//            // In a real application, send email here
+//            // For now, we'll log the reset link
+//            String resetLink = "http://localhost:8080/api/auth/reset-password?token=" + resetToken;
+//            System.out.println("Password reset link for " + email + ": " + resetLink);
+//
+//            return new PasswordResetResponse(true, "If the email exists, a reset link has been sent");
+//        } else {
+//            return new PasswordResetResponse(false, "Failed to process password reset request");
+//        }
+//    }
 
     /**
      * Reset password using reset token
      * @param resetPasswordRequest reset password request
      * @return password reset response
      */
-    public PasswordResetResponse resetPassword(ResetPasswordRequest resetPasswordRequest) {
-        String token = resetPasswordRequest.getToken();
-        String newPassword = resetPasswordRequest.getNewPassword();
-        
-        // Validate password strength
-        if (!PasswordUtil.isValidPassword(newPassword)) {
-            return new PasswordResetResponse(false, "Password must be at least 8 characters with uppercase, lowercase, and digit");
-        }
-        
-        // Find user by reset token
-        var userOptional = databaseService.findUserByResetToken(token);
-        if (userOptional.isEmpty()) {
-            return new PasswordResetResponse(false, "Invalid or expired reset token");
-        }
-        
-        User user = userOptional.get();
-        
-        // Check if token is expired
-        if (user.getResetTokenExpiry() == null || user.getResetTokenExpiry().isBefore(LocalDateTime.now())) {
-            return new PasswordResetResponse(false, "Reset token has expired");
-        }
-        
-        // Update password and clear reset token
-        user.setPassword(PasswordUtil.hashPassword(newPassword));
-        user.setResetToken(null);
-        user.setResetTokenExpiry(null);
-        user.setUpdatedAt(LocalDateTime.now());
-        
-        if (databaseService.updateUser(user)) {
-            // Invalidate any existing sessions for this user
-            userTokenStore.remove(user.getEmail());
-            userRefreshTokenStore.remove(user.getEmail());
-            
-            return new PasswordResetResponse(true, "Password reset successfully");
-        } else {
-            return new PasswordResetResponse(false, "Failed to reset password");
-        }
-    }
+//    public PasswordResetResponse resetPassword(ResetPasswordRequest resetPasswordRequest) {
+//        String token = resetPasswordRequest.getToken();
+//        String newPassword = resetPasswordRequest.getNewPassword();
+//
+//        // Validate password strength
+//        if (!PasswordUtil.isValidPassword(newPassword)) {
+//            return new PasswordResetResponse(false, "Password must be at least 8 characters with uppercase, lowercase, and digit");
+//        }
+//
+//        // Find user by reset token
+//        var userOptional = databaseService.findUserByResetToken(token);
+//        if (userOptional.isEmpty()) {
+//            return new PasswordResetResponse(false, "Invalid or expired reset token");
+//        }
+//
+//        User user = userOptional.get();
+//
+//        // Check if token is expired
+//        if (user.getResetTokenExpiry() == null || user.getResetTokenExpiry().isBefore(LocalDateTime.now())) {
+//            return new PasswordResetResponse(false, "Reset token has expired");
+//        }
+//
+//        // Update password and clear reset token
+//        user.setPassword(PasswordUtil.hashPassword(newPassword));
+//        user.setResetToken(null);
+//        user.setResetTokenExpiry(null);
+//        user.setUpdatedAt(LocalDateTime.now());
+//
+//        if (databaseService.updateUser(user)) {
+//            // Invalidate any existing sessions for this user
+//            userTokenStore.remove(user.getEmail());
+//            userRefreshTokenStore.remove(user.getEmail());
+//
+//            return new PasswordResetResponse(true, "Password reset successfully");
+//        } else {
+//            return new PasswordResetResponse(false, "Failed to reset password");
+//        }
+//    }
 
     /**
      * Validate JWT token
