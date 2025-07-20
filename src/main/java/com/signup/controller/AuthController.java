@@ -22,7 +22,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import com.signup.dto.SignupResponse;
-import io.swagger.v3.oas.annotations.media.Schema;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -57,33 +56,33 @@ public class AuthController {
         }
     }
 
-    @PostMapping("/forgot-password")
-    @Operation(
-        summary = "Forgot password",
-        description = "Send a password reset link to the user's email address"
-    )
-    public ResponseEntity<PasswordResetResponse> forgotPassword(@Valid @RequestBody ForgotPasswordRequest forgotPasswordRequest) {
-        PasswordResetResponse response = authService.forgotPassword(forgotPasswordRequest);
-        if (response.isSuccess()) {
-            return ResponseEntity.ok(response);
-        } else {
-            return ResponseEntity.badRequest().body(response);
-        }
-    }
+//    @PostMapping("/forgot-password")
+//    @Operation(
+//        summary = "Forgot password",
+//        description = "Send a password reset link to the user's email address"
+//    )
+//    public ResponseEntity<PasswordResetResponse> forgotPassword(@Valid @RequestBody ForgotPasswordRequest forgotPasswordRequest) {
+//        PasswordResetResponse response = authService.forgotPassword(forgotPasswordRequest);
+//        if (response.isSuccess()) {
+//            return ResponseEntity.ok(response);
+//        } else {
+//            return ResponseEntity.badRequest().body(response);
+//        }
+//    }
 
-    @PostMapping("/reset-password")
-    @Operation(
-        summary = "Reset password",
-        description = "Reset password using the token received via email"
-    )
-    public ResponseEntity<PasswordResetResponse> resetPassword(@Valid @RequestBody ResetPasswordRequest resetPasswordRequest) {
-        PasswordResetResponse response = authService.resetPassword(resetPasswordRequest);
-        if (response.isSuccess()) {
-            return ResponseEntity.ok(response);
-        } else {
-            return ResponseEntity.badRequest().body(response);
-        }
-    }
+//    @PostMapping("/reset-password")
+//    @Operation(
+//        summary = "Reset password",
+//        description = "Reset password using the token received via email"
+//    )
+//    public ResponseEntity<PasswordResetResponse> resetPassword(@Valid @RequestBody ResetPasswordRequest resetPasswordRequest) {
+//        PasswordResetResponse response = authService.resetPassword(resetPasswordRequest);
+//        if (response.isSuccess()) {
+//            return ResponseEntity.ok(response);
+//        } else {
+//            return ResponseEntity.badRequest().body(response);
+//        }
+//    }
 
     @PostMapping("/logout")
     @Operation(
