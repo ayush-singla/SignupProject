@@ -1,15 +1,11 @@
 package com.signup.controller;
 
 import com.signup.dto.AuthResponse;
-import com.signup.dto.ForgotPasswordRequest;
 import com.signup.dto.LoginRequest;
-import com.signup.dto.PasswordResetResponse;
-import com.signup.dto.ResetPasswordRequest;
 import com.signup.dto.SignupRequest;
 import com.signup.dto.ProfileResponse;
 import com.signup.dto.LogoutResponse;
 import com.signup.dto.RefreshTokenRequest;
-import com.signup.model.User;
 import com.signup.service.AuthService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
